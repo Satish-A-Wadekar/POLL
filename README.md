@@ -43,6 +43,8 @@ Go to Frontend folder
 
 ## Application Demo 
 
+once both the projects are up and running, you may access the running application on
+
 http://localhost:3000
 
 
