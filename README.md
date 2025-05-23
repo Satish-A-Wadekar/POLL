@@ -51,7 +51,7 @@ http://localhost:3000
 If you have any feedback, please reach out to me at satish.a.wadekar@hotmail.com OR [+971-509152129](+971-509152129)
 
 
-## 🔗 Links
+## 🔗 My portfolio & achivement links
 [![portfolio](https://img.shields.io/badge/Medium-blue?logo=medium)](https://medium.com/@satish.a.wadekar)
 [![linkedin](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=YOUR_LINKEDIN_URL)](https://www.linkedin.com/in/satish-w-4b565056/)
 [![AWS Badges](https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazonwebservices&logoColor=white)](https://www.youracclaim.com/users/satish-wadekar.af05373c/badges?sort=-state_updated_at&page=1)
