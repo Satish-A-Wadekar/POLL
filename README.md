@@ -22,7 +22,8 @@ This is a Polling Application developed for Herogram Test
 - Live polling
 - Live result 
 - Create poll
-- Vote existing poll
+- Vote on existing poll
+- Active Polls, Expired Polls
 
 ## Installation
 
