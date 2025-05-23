@@ -17,7 +17,8 @@ This is a Polling Application developed for Herogram Test
 
 ## Features
 
-- Real Time Poll Application
+- Real Time Polling
+- No page refresh required
 - Live polling
 - Live result 
 - Create poll
