@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -10,6 +11,7 @@ import {
 } from '@mui/material';
 import { getOrCreateUserId, hasUserVoted, setVoted, cleanupPollStorage } from '../utils/storage';
 import socket from '../socket';
+import { useRateLimit } from '../hooks/useRateLimit';
 
 const PollVote = ({ poll: initialPoll }) => {
   // State initialization
@@ -24,6 +26,13 @@ const PollVote = ({ poll: initialPoll }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const isExpired = new Date(poll.expiryDate) < new Date();
+
+  // Rate limit: 5 votes per second per poll
+  const { remaining, isLimited, resetTime, recordAction } = useRateLimit(
+    `vote_${poll?.id}`, // Unique key per poll
+    5,                 // 5 votes
+    1000               // Per second (1000ms)
+  );
 
   // Initialize user and voting status
   useEffect(() => {
@@ -59,7 +68,12 @@ const PollVote = ({ poll: initialPoll }) => {
         setError('This poll has expired and no longer accepts votes');
         return;
       }
-      
+      if (isLimited) {
+        setError(`Too many votes! Try again in a moment. (${remaining} left)`);
+        return;
+      }
+      recordAction(); // Record the vote attempt
+
       setIsLoading(true);
       setError(null);
 
