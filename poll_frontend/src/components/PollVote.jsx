@@ -29,10 +29,11 @@ const PollVote = ({ poll: initialPoll }) => {
 
   // Rate limit: 5 votes per second per poll
   const { remaining, isLimited, resetTime, recordAction } = useRateLimit(
-    `vote_${poll?.id}`, // Unique key per poll
+    `vote_${poll.id}_${getOrCreateUserId()}`, // Unique key per poll per user
     5,                 // 5 votes
     1000               // Per second (1000ms)
   );
+
 
   // Initialize user and voting status
   useEffect(() => {
@@ -68,11 +69,21 @@ const PollVote = ({ poll: initialPoll }) => {
         setError('This poll has expired and no longer accepts votes');
         return;
       }
+
+      // Check rate limit first
       if (isLimited) {
         setError(`Too many votes! Try again in a moment. (${remaining} left)`);
         return;
       }
-      recordAction(); // Record the vote attempt
+
+      // Record action and get updated state immediately
+      const { isLimited: newIsLimited } = recordAction();
+
+      if (newIsLimited) {
+        setError(`Too many votes! Try again in a moment. (${remaining - 1} left)`);
+        return;
+      }
+
 
       setIsLoading(true);
       setError(null);
@@ -154,11 +165,12 @@ const PollVote = ({ poll: initialPoll }) => {
             variant="contained"
             size="large"
             onClick={handleVote}
-            disabled={selectedOption === null || isLoading}
+            disabled={selectedOption === null || isLoading || isLimited}
             startIcon={isLoading ? <CircularProgress size={24} /> : null}
             sx={{ mt: 1 }}
           >
-            {isLoading ? 'Submitting Vote...' : 'Submit Vote'}
+            {isLimited ? 'Wait to vote again' :
+              isLoading ? 'Submitting Vote...' : 'Submit Vote'}
           </Button>
         </Stack>
       )}
