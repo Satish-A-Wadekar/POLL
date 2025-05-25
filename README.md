@@ -26,8 +26,8 @@ This is a Polling Application developed for Herogram Test
 - Active Polls, Expired Polls
 - Data validation
 - Rate Limit
--   (5 create poll / 1 minute)
--   (5 votes on existing poll / 1 sec)
+  - (5 create poll / 1 minute)
+  -   (5 votes on existing poll / 1 sec)
 
 ## Installation
 
