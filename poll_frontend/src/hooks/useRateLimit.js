@@ -12,7 +12,7 @@ export const useRateLimit = (actionKey, limit, windowInMs) => {
         const now = Date.now();
         const actions = JSON.parse(localStorage.getItem(`rateLimit_${actionKey}`)) || [];
         const validActions = actions.filter(time => now - time < windowInMs);
-        
+
         const newRemaining = limit - validActions.length;
         setRemaining(newRemaining);
         setIsLimited(newRemaining <= 0);
@@ -49,13 +49,14 @@ export const useRateLimit = (actionKey, limit, windowInMs) => {
         actions.push(now);
         localStorage.setItem(`rateLimit_${actionKey}`, JSON.stringify(actions));
 
-        setRemaining(prev => {
-            const newRemaining = prev - 1;
-            setIsLimited(newRemaining <= 0);
-            return newRemaining;
-        });
+        const newRemaining = remaining - 1;
+        const newIsLimited = newRemaining <= 0;
 
+        setRemaining(newRemaining);
+        setIsLimited(newIsLimited);
         setResetTime(new Date(now + windowInMs));
+
+        return { isLimited: newIsLimited, remaining: newRemaining };
     };
 
     return { remaining, isLimited, resetTime, recordAction, revalidate };
