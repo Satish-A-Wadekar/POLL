@@ -9,11 +9,11 @@ This is a Polling Application developed for Herogram Test
 
 ## Tech Stack
 
-**Client:** React, Socket.io, MUI
+**Client:** React.js, Socket.IO, MUI Library
 
 **Server:** Node.js, NEST.js, Express, Socket.IO
 
-**Database:** SQLite3
+**Database:** SQLite3, Redis
 
 ## Features
 
@@ -24,6 +24,8 @@ This is a Polling Application developed for Herogram Test
 - Create poll
 - Vote on existing poll
 - Active Polls, Expired Polls
+- Data validation
+- Rate Limit (user can not cross limit for create poll or vote in specific time period) 
 
 ## Installation
 
@@ -34,6 +36,12 @@ Go to Backend folder
 ```bash
   npm install OR yarn install
   npm run start:dev OR yarn start:dev
+```
+
+.env file setup
+
+```bash
+  please use the env_template file for environment variables 
 ```
 
 Go to Frontend folder
