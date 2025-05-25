@@ -25,7 +25,7 @@ This is a Polling Application developed for Herogram Test
 - Vote on existing poll
 - Active Polls, Expired Polls
 - Data validation
-- Rate Limit (user can not cross limit for create poll or vote in specific time period) 
+- Rate Limit (user can not cross limit of 5 for create poll in specific 1 minute of time period, user has to wait for another minute) 
 
 ## Installation
 
