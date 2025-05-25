@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Poll } from './poll.entity';
@@ -18,14 +22,17 @@ export class PollsService {
   ) {}
 
   async create(createPollDto: CreatePollDto): Promise<Poll> {
+    // Manual validation as backup
+    const expiryDate = new Date(createPollDto.expiryDate);
+    if (expiryDate <= new Date()) {
+      throw new BadRequestException('Expiry date must be in the future');
+    }
+
     const poll = this.pollsRepository.create({
-      ...createPollDto,
-      options: createPollDto.options.map((option) => ({
-        text: option,
-        votes: 0,
-      })),
+      question: createPollDto.question,
+      options: createPollDto.options.map((text) => ({ text, votes: 0 })),
       votedUsers: [],
-      isExpired: false,
+      expiryDate,
     });
 
     return this.pollsRepository.save(poll);

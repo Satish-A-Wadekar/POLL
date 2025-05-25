@@ -1,0 +1,16 @@
+/* src/components/CreatePoll.css */
+.error {
+  border: 1px solid #ff3860;
+}
+
+.error-message {
+  color: #ff3860;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+button.submitting {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

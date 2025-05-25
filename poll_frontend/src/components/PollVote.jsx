@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Button, 
-  LinearProgress, 
-  Typography, 
+import {
+  Box,
+  Button,
+  LinearProgress,
+  Typography,
   Stack,
   Alert,
   CircularProgress
@@ -18,17 +18,18 @@ const PollVote = ({ poll: initialPoll }) => {
     options: initialPoll.options || [],
     votedUsers: initialPoll.votedUsers || []
   });
-  
+
   const [selectedOption, setSelectedOption] = useState(null);
   const [hasVoted, setHasVoted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const isExpired = new Date(poll.expiryDate) < new Date();
 
   // Initialize user and voting status
   useEffect(() => {
     const userId = getOrCreateUserId();
     cleanupPollStorage(poll.id); // Cleanup old entries
-    
+
     // Check vote status from both localStorage and poll data
     const votedStatus = hasUserVoted(poll.id) || poll.votedUsers.includes(userId);
     setHasVoted(votedStatus);
@@ -54,9 +55,14 @@ const PollVote = ({ poll: initialPoll }) => {
   // Voting handler
   const handleVote = async () => {
     try {
+      if (isExpired) {
+        setError('This poll has expired and no longer accepts votes');
+        return;
+      }
+      
       setIsLoading(true);
       setError(null);
-      
+
       const userId = getOrCreateUserId();
       const response = await new Promise((resolve) => {
         socket.emit('vote', {
@@ -85,10 +91,10 @@ const PollVote = ({ poll: initialPoll }) => {
   const showVotingForm = !hasVoted && !poll.isExpired;
 
   return (
-    <Box sx={{ 
-      p: 3, 
-      bgcolor: 'background.paper', 
-      borderRadius: 2, 
+    <Box sx={{
+      p: 3,
+      bgcolor: 'background.paper',
+      borderRadius: 2,
       boxShadow: 1,
       maxWidth: 600,
       mx: 'auto'
@@ -111,7 +117,7 @@ const PollVote = ({ poll: initialPoll }) => {
           <Typography variant="body1" color="text.secondary">
             Select your choice:
           </Typography>
-          
+
           {poll.options.map((option, index) => (
             <Button
               key={index}
@@ -148,12 +154,12 @@ const PollVote = ({ poll: initialPoll }) => {
         <Typography variant="h6" gutterBottom sx={{ fontWeight: 'medium' }}>
           {hasVoted ? 'Your Vote Results' : 'Current Results'}
         </Typography>
-        
+
         {poll.options.map((option, index) => {
-          const percentage = totalVotes > 0 
+          const percentage = totalVotes > 0
             ? Math.round((option.votes / totalVotes) * 100)
             : 0;
-          
+
           return (
             <Box key={index} sx={{ mb: 2 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>

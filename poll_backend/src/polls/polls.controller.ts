@@ -8,6 +8,8 @@ import {
   Param,
   ParseIntPipe,
   Req,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { PollsService } from './polls.service';
 import { CreatePollDto } from './dto/create-poll.dto';
@@ -29,6 +31,7 @@ export class PollsController {
   }
 
   @Post()
+  @UsePipes(new ValidationPipe({ transform: true }))
   create(@Body() createPollDto: CreatePollDto) {
     // No need for conversion, frontend should send Date-compatible string
     return this.pollsService.create(createPollDto);
